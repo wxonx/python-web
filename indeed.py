@@ -1,10 +1,11 @@
 import requests
 from bs4 import BeautifulSoup
 
-indeed_url = "https://www.indeed.com/jobs?q=python&limit=50"
+limit = 50
+url = f"https://www.indeed.com/jobs?q=python&limit={limit}"
 
 def extract_indeed_pages():
-  indeed = requests.get(indeed_url)
+  indeed = requests.get(url)
 
   indeed_soup = BeautifulSoup(indeed.text, "html.parser")
 
@@ -17,4 +18,10 @@ def extract_indeed_pages():
 
   max_page = spans[-1]
   return max_page
+
+
+def extract_indeed_jobs(last_page):
+  for page in range(last_page):
+    print(f"&start={page*limit}")
+
 
