@@ -11,7 +11,7 @@ pagination = indeed_soup.find("div", {"class": "pagination"})
 
 pages = pagination.find_all('a')
 spans = []
-for page in pages:
-    spans.append(page.find("span"))
+for page in pages[:-1]:
+    spans.append(int(page.string))
 
-print(spans[:-1])
+max_page = print(spans[-1])
