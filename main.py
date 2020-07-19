@@ -12,7 +12,8 @@ spans = []
 for page in pages[:-1]:
     spans.append(int(page.string))
 
-max_page = print(spans[-1])
+max_page = spans[-1]
+
 
 for n in range(max_page):
-  print(f"start={n*50}")
+    print(f"start={n*50}")
