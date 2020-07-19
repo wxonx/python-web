@@ -1,9 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 
-indeed = requests.get(
-    "https://www.indeed.com/jobs?as_and=python&as_phr=&as_any=&as_not=&as_ttl=&as_cmp=&jt=all&st=&as_src=&salary=&radius=25&l=&fromage=any&limit=50&sort=&psf=advsrch&from=advancedsearch"
-)
+indeed = requests.get("https://www.indeed.com/jobs?q=python&limit=50")
 
 indeed_soup = BeautifulSoup(indeed.text, "html.parser")
 
@@ -15,3 +13,6 @@ for page in pages[:-1]:
     spans.append(int(page.string))
 
 max_page = print(spans[-1])
+
+for n in range(max_page):
+  print(f"start={n*50}")
