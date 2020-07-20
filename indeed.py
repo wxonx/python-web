@@ -5,24 +5,26 @@ limit = 50
 url = f"https://www.indeed.com/jobs?q=python&limit={limit}"
 
 def extract_indeed_pages():
-  indeed = requests.get(url)
-
-  indeed_soup = BeautifulSoup(indeed.text, "html.parser")
-
-  pagination = indeed_soup.find("div", {"class": "pagination"})
-
+  result = requests.get(url)
+  soup = BeautifulSoup(result.text, "html.parser")
+  pagination = soup.find("div", {"class": "pagination"})
   pages = pagination.find_all('a')
   spans = []
   for page in pages[:-1]:
     spans.append(int(page.string))
-
   max_page = spans[-1]
   return max_page
 
 
 def extract_indeed_jobs(last_page):
-  for page in range(last_page):
-    result = requests.get(f"{url}&start={page*limit}")
-    print(result.status_code)
-
+  jobs = []
+  #for page in range(last_page):
+  result = requests.get(f"{url}&start={0*limit}")
+  soup = BeautifulSoup(result.text, "html.parser")
+  results = soup.find_all("div", {"class": "jobsearch-SerpJobCard"})
+  for result in results:
+      title = result.find("h2", {"class": "title"})
+      anchor = title.find("a")["title"]
+      print(anchor)
+  return jobs
 
