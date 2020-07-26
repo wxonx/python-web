@@ -27,14 +27,22 @@ def extract_job(html):
         company = (str(company.string))
     company = company.strip()
     location = html.find("div", {"class": "recJobLoc"})["data-rc-loc"]
-    print(location)
-    return {'title': title, 'company': company, 'location': location}
+    job_id = html["data-jk"]
+
+    return {
+        'title': title,
+        'company': company,
+        'location': location,
+        "link": f"https://www.indeed.com/viewjob?jk={job_id}"
+    }
 
 
 def extract_indeed_jobs(last_page):
-    jobs = []
-    #for page in range(last_page):
-    result = requests.get(f"{url}&start={0*limit}")
+  
+  jobs = []
+  for page in range(last_page):
+    print(f"Scrapping page {page}")
+    result = requests.get(f"{url}&start={page*limit}")
     soup = BeautifulSoup(result.text, "html.parser")
     results = soup.find_all("div", {"class": "jobsearch-SerpJobCard"})
     #find.all = 리스트 전부를 가져옴
@@ -42,4 +50,4 @@ def extract_indeed_jobs(last_page):
     for result in results:
         job = extract_job(result)
         jobs.append(job)
-    return jobs
+  return jobs
