@@ -28,7 +28,6 @@ def extract_job(html):
     company = company.strip()
     location = html.find("div", {"class": "recJobLoc"})["data-rc-loc"]
     job_id = html["data-jk"]
-
     return {
         'title': title,
         'company': company,
@@ -38,22 +37,21 @@ def extract_job(html):
 
 
 def extract_jobs(last_page):
-  jobs = []
-  for page in range(last_page):
-    print(f"Scrapping page {page}")
-    result = requests.get(f"{url}&start={page*limit}")
-    soup = BeautifulSoup(result.text, "html.parser")
-    results = soup.find_all("div", {"class": "jobsearch-SerpJobCard"})
-    #find.all = 리스트 전부를 가져옴
-    #find는 첫번째 찾은 결과를 보여줌
-    for result in results:
-        job = extract_job(result)
-        jobs.append(job)
-  return jobs
-
+    jobs = []
+    for page in range(last_page):
+        print(f"Scrapping page {page}")
+        result = requests.get(f"{url}&start={page*limit}")
+        soup = BeautifulSoup(result.text, "html.parser")
+        results = soup.find_all("div", {"class": "jobsearch-SerpJobCard"})
+        #find.all = 리스트 전부를 가져옴
+        #find는 첫번째 찾은 결과를 보여줌
+        for result in results:
+            job = extract_job(result)
+            jobs.append(job)
+    return jobs
 
 
 def get_jobs():
-  last_page = get_last_page() 
-  jobs = extract_jobs(last_page)
-  return jobs
+    last_page = get_last_page()
+    jobs = extract_jobs(last_page)
+    return jobs
